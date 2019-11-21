@@ -9,6 +9,8 @@ class WantToRead extends React.Component {
             <h2 className="bookshelf-title">Want to Read</h2>
             <ListBooks 
               books={this.props.listBooks}
+              handleShelf={this.props.handleShelf}
+
             /> 
           </div>
         )

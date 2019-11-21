@@ -11,6 +11,7 @@ class CurrentlyReading extends React.Component {
                 <h2 className="bookshelf-title">Currently Reading</h2>
                 <ListBooks 
                   books={this.props.listBooks}
+                  handleShelf={this.props.handleShelf}
                 /> 
              </div>
 

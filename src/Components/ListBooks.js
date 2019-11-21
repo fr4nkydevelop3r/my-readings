@@ -11,6 +11,8 @@ class ListBooks extends React.Component {
                         <Book 
                             book={book}
                             key={item}
+                            handleShelf={this.props.handleShelf}
+
                         />
                     ))}  
              </ol>   

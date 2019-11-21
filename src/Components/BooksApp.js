@@ -32,10 +32,33 @@ class BooksApp extends React.Component {
       });
   }
 
+    // TODO: move books between shelves
+
+  handleShelf = (book, shelf) => {
+
+
+    BooksAPI.update(book, shelf)
+        .then((response) => {
+            this.setState((state) => {
+                const books = state.booksCollection.map(b => {
+                        if(b.id === book.id ){
+                            b.shelf = shelf;
+                            return b;
+                        } else {
+                            return b;
+                        }
+                    })
+                    return {
+                        booksCollection : [...books]
+                    }
+                });
+    })
+  
+  }
 
   render() {
 
-    console.log(this.state.booksCollection);
+    //console.log(this.state.booksCollection);
 
     return (
         <div className="app">
@@ -51,21 +74,24 @@ class BooksApp extends React.Component {
             <div className="list-books-content">
               <div>
               <CurrentlyReading 
-                listBooks={this.state.booksCollection.filter((item) => {
-                    return item.shelf === 'currentlyReading'
-                })}
+                    listBooks={this.state.booksCollection.filter((item) => {
+                        return item.shelf === 'currentlyReading'
+                    })}
+                    handleShelf={this.handleShelf}
               />
 
                <WantToRead 
                     listBooks={this.state.booksCollection.filter((item) => {
                         return item.shelf === 'wantToRead'
                     })}
+                    handleShelf={this.handleShelf}
                />  
 
                <Read 
-                listBooks={this.state.booksCollection.filter((item) => {
-                    return item.shelf === 'read'
-                })}
+                    listBooks={this.state.booksCollection.filter((item) => {
+                        return item.shelf === 'read'
+                    })}
+                    handleShelf={this.handleShelf}
                />
 
 

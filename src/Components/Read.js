@@ -11,6 +11,8 @@ class Read extends React.Component {
             <h2 className="bookshelf-title">Read</h2>
             <ListBooks 
               books={this.props.listBooks}
+              handleShelf={this.props.handleShelf}
+
             /> 
           </div>
         )
