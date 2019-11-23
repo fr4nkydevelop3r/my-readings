@@ -1,110 +1,110 @@
-import React from 'react';
-import * as BooksAPI from '../BooksAPI';
-import '../App.css';
-import CurrentlyReading from './CurrentlyReading';
-import WantToRead from './WantToRead';
-import Read from './Read';
-import SearchBooks from './SearchBooks';
+import React from "react";
+import * as BooksAPI from "../BooksAPI";
+import "../App.css";
+import { Route, Switch } from "react-router-dom";
+import SearchBooks from "./SearchBooks";
+import ShowShelves from "./ShowShelves";
+import NotFound from "./NotFound";
 
 class BooksApp extends React.Component {
-    state = {
-        booksCollection: [],
-        showSearchPage : false      
-    }
+  state = {
+    booksCollection: []
+  };
 
-
-  componentDidMount(){
-    
+  componentDidMount() {
     // TODO: get collection of books
 
-    BooksAPI.getAll()
-        .then((books) => {
-            this.setState({
-                booksCollection: books
-            });
-        })
-    
-  }    
-
-  handleSearchPage = () => {
+    BooksAPI.getAll().then(books => {
       this.setState({
-        showSearchPage : false
+        booksCollection: books
       });
+    });
   }
 
-    // TODO: move books between shelves
+  //TODO: delete book from shelf
 
-  handleShelf = (book, shelf) => {
+  deleteBook = (book, shelf) => {
+    this.setState(state => {
+      const books = state.booksCollection.filter(b => {
+        return b.id !== book.id;
+      });
+      return {
+        booksCollection: books
+      };
+    });
+  };
 
+  // TODO: move books between shelves
 
-    BooksAPI.update(book, shelf)
-        .then((response) => {
-            this.setState((state) => {
-                const books = state.booksCollection.map(b => {
-                        if(b.id === book.id ){
-                            b.shelf = shelf;
-                            return b;
-                        } else {
-                            return b;
-                        }
-                    })
-                    return {
-                        booksCollection : [...books]
-                    }
-                });
-    })
-  
-  }
+  updateShelf = (book, shelf) => {
+    if (shelf === "none") {
+      this.deleteBook(book, shelf);
+    }
+
+    BooksAPI.update(book, shelf).then(response => {
+      this.setState(state => {
+        const books = state.booksCollection.map(b => {
+          if (b.id === book.id) {
+            b.shelf = shelf;
+            return b;
+          } else {
+            return b;
+          }
+        });
+        return {
+          booksCollection: books
+        };
+      });
+    });
+  };
+
+  //TODO : add book to shelf
+
+  addBook = (book, shelf) => {
+    book.shelf = shelf;
+    BooksAPI.update(book, shelf).then(response => {
+      this.setState(state => {
+        const listBooks = state.booksCollection.concat(book);
+        return {
+          booksCollection: listBooks
+        };
+      });
+    });
+  };
 
   render() {
-
     //console.log(this.state.booksCollection);
 
     return (
-        <div className="app">
-        {this.state.showSearchPage ? (
-            <SearchBooks 
-            handleSearchPage={this.handleSearchPage}
-            />
-        ) : (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-              <CurrentlyReading 
-                    listBooks={this.state.booksCollection.filter((item) => {
-                        return item.shelf === 'currentlyReading'
-                    })}
-                    handleShelf={this.handleShelf}
+      <div className="app">
+        <Switch>
+          <Route
+            exact
+            path="/search"
+            render={() => (
+              <SearchBooks
+                handleSearchPage={this.handleSearchPage}
+                listBooks={this.state.booksCollection}
+                addBook={this.addBook}
               />
+            )}
+          ></Route>
 
-               <WantToRead 
-                    listBooks={this.state.booksCollection.filter((item) => {
-                        return item.shelf === 'wantToRead'
-                    })}
-                    handleShelf={this.handleShelf}
-               />  
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <ShowShelves
+                listBooks={this.state.booksCollection}
+                updateShelf={this.updateShelf}
+              />
+            )}
+          ></Route>
 
-               <Read 
-                    listBooks={this.state.booksCollection.filter((item) => {
-                        return item.shelf === 'read'
-                    })}
-                    handleShelf={this.handleShelf}
-               />
-
-
-              </div>
-            </div>
-            <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
-            </div>
-          </div>
-        )}
+          <Route component={NotFound}></Route>
+        </Switch>
       </div>
-    )
+    );
   }
-
 }
 export default BooksApp;
