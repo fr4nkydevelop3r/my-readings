@@ -1,4 +1,5 @@
 import React from "react";
+import { DebounceInput } from "react-debounce-input";
 import "../App.css";
 import { withRouter } from "react-router-dom";
 
@@ -51,6 +52,7 @@ class SearchBooks extends React.Component {
               resultBooks: []
             });
           } else {
+            console.log("Llamada!"); //15 without debounce :O and 3 with
             this.handleResult(books);
           }
         });
@@ -76,7 +78,8 @@ class SearchBooks extends React.Component {
             Close
           </button>
           <div className="search-books-input-wrapper">
-            <input
+            <DebounceInput
+              debounceTimeout={1000}
               type="text"
               placeholder="Search by title or author"
               value={this.state.search}
