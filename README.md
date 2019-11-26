@@ -2,13 +2,21 @@
 
 Manage what books you have read, want to read or already read also search for new books.
 
-## Available Scripts
+## Setup Application
 
-In the project directory, you can run:
+1. ## Clone repository
+
+### `git clone https://github.com/fr4nkydevelop3r/my-readings.git`
+
+2. ## Change to the app directory
+
+### `cd my-readings`
+
+## In the project directory, you can run:
 
 ### `npm install`
 
-Will install all dependencies needed for the project.
+Install dependencies
 
 ### `npm start`
 
