@@ -4,21 +4,21 @@ Manage what books you have read, want to read or already read also search for ne
 
 ## Setup Application
 
-1. ## Clone repository
+### 1. Clone repository
 
-### `git clone https://github.com/fr4nkydevelop3r/my-readings.git`
+`git clone https://github.com/fr4nkydevelop3r/my-readings.git`
 
-2. ## Change to the app directory
+### 2. Change to the app directory
 
-### `cd my-readings`
+`cd my-readings`
 
-## In the project directory, you can run:
+### In the project directory, you can run:
 
-### `npm install`
+`npm install`
 
 Install dependencies
 
-### `npm start`
+`npm start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
